@@ -1,11 +1,11 @@
 <template>
     <div class="vue-datepicker" @mouseout="endChoice" @mouseover="startMouseOver">
-        <input type="text" :value="value" @click="startChoice" @keypress="startChoice">
+        <input type="text" :name="field" :id="field" :value="value" @click="startChoice" @keypress="startChoice">
         <div class="panel" v-show="isShow">
             <div class="month">
-                <a class="prev" @click="prevMonth"> < </a>
+                <a class="prev" @click="prevMonth"> &lt; </a>
                 <span>{{ year }}年{{ month }}月</span>
-                <a class="next" @click="nextMonth"> > </a>
+                <a class="next" @click="nextMonth"> &gt; </a>
             </div>
             <table class="day">
                 <thead>
@@ -29,8 +29,11 @@
 <script>
     'use strict';
 
+    import strPadStart  from 'string.prototype.padstart';
+    strPadStart.shim(); //es7 shim
+
     export default {
-        props: ['value'],
+        props: ['field', 'value'],
         data() {
             let { value} = this,
                     dateObj, year, month, day, date;
