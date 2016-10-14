@@ -1,0 +1,25 @@
+{
+    "name": "vue-datepicker-simple",
+    "version": "1.0.0",
+    "description": "一个非常简单的基于vue的日期选择插件",
+    "main": "datepicker.vue",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dai-siki/vue-datepicker-simple.git"
+    },
+    "keywords": [
+        "vue",
+        "datepicker",
+        "vue-datepicker",
+        "vue-datepicker-simple"
+    ],
+    "author": "dai-siki",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/dai-siki/vue-datepicker-simple/issues"
+    },
+    "homepage": "https://github.com/dai-siki/vue-datepicker-simple#readme"
+}
