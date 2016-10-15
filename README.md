@@ -8,7 +8,7 @@
 ![screenshot](screenshot.png)
 
 ## 版本依赖
-基于 vue.js@1 版本
+基于 vue.js@1 版本。模块使用了es7编写，及scss编译
 
 ## 安装
 ### npm
