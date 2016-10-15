@@ -5,7 +5,8 @@ import myDatepicker from '../datepicker.vue';
 new Vue({
     el: '#app',
     data:{
-        date: ''
+        date: '2016/02/28',
+		format: 'yyyy/mm/dd' // 默认yyyy-mm-dd
     },
     components:{
         'date-picker': myDatepicker

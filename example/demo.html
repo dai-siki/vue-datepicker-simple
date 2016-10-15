@@ -2,32 +2,34 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>demo</title>
-    <style media="screen">
-        * {
-            margin: 0;
-            padding: 0;
-        }
+	<meta charset="UTF-8">
+	<title>demo</title>
+	<style media="screen">
+		* {
+			margin: 0;
+			padding: 0;
+		}
 
-        body {
-            padding: 50px;
-        }
+		body {
+			padding: 50px;
+		}
 
-        #app label {
-            display: block;
-            margin-bottom: 10px;
-        }
-    </style>
+		#app label {
+			display: block;
+			margin-bottom: 10px;
+		}
+	</style>
 </head>
 
 <body>
-    <div id="app">
-        <label for="myDate">选择日期</label>
-        <date-picker :value.sync="date" field="myDate"></date-picker>
-    <div>
+<div id="app">
+	<label for="myDate">选择日期</label>
+	<date-picker field="myDate"
+				 :value.sync="date"
+				 :format="format" ></date-picker>
+</div>
 
-    <script src="demo-src.js"></script>
+<script src="demo-src.js"></script>
 </body>
 
 </html>

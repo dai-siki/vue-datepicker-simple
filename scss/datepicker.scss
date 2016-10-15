@@ -10,27 +10,27 @@ $w: 35px;
 	font-family: verdana;
 	font-size: 14px;
 	color: #666;
-	*{
+	* {
 		margin: 0;
 		padding: 0;
 	}
 	input {
+		display: block;
 		width: $w*7;
 		height: 28px;
 		padding-left: 6px;
 		border: 1px solid $grey1;
 	}
-	.panel {
+	.vue-datepicker-panel {
 		position: absolute;
 		z-index: 99999;
 		left: 0;
-		top: 30px;
 		background-color: #FFF;
 		width: $w*7;
 		border: 1px solid $grey1;
 		box-shadow: 0 0 10px 0 $grey1;
 		padding: 10px 6px;
-		.month {
+		.vue-datepicker-month {
 			padding-bottom: 4px;
 			height: $w;
 			line-height: $w;
@@ -51,9 +51,15 @@ $w: 35px;
 				float: left;
 				display: block;
 				width: $w*5;
+				&.vue-datepicker-btn {
+					&:hover {
+						background-color: $grey2;
+						cursor: pointer;
+					}
+				}
 			}
 		}
-		.day {
+		.vue-datepicker-tb, .vue-datepicker-tb2 {
 			width: $w*7;
 			border-collapse: collapse;
 			text-align: center;
@@ -94,6 +100,26 @@ $w: 35px;
 									color: #FFF;
 									background-color: $c1;
 								}
+							}
+						}
+					}
+				}
+			}
+		}
+		.vue-datepicker-tb2 {
+			tbody {
+				tr {
+					border-top: 1px solid #EEE;
+					td {
+						height: $w*0.9;
+						padding: 4px 10px;
+						font-size: 13px;
+						&.z-existed {
+							cursor: pointer;
+							span {
+								display: block;
+								height: $w*0.65;
+								line-height: $w*0.65;
 							}
 						}
 					}

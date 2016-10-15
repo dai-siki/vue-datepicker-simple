@@ -63,7 +63,7 @@ gulp.task('js', function() {
 });
 
 gulp.task('serve', function() {
-    gulp.watch([dir.res + './example/demo.js', dir.res + './datepicker.vue', dir.res + './scss/*.scss'], ['js']);
+    gulp.watch(['./example/demo.js', './datepicker.vue', './scss/*.scss'], ['js']);
 });
 
 gulp.task('default', ['serve']);
