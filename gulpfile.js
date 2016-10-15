@@ -6,64 +6,65 @@
 
 // import package
 const $ = require('gulp-load-plugins')(),
-    webpack = require('webpack-stream'),
-    named = require('vinyl-named'),
-    gulp = require('gulp');
+	webpack = require('webpack-stream'),
+	named = require('vinyl-named'),
+	gulp = require('gulp');
 
 /** 开发
  -------------------------------------------------------------*/
 
 // jS task
-gulp.task('js', function() {
-    var webpack_config = {
-        module: {
-            loaders: [
-                {
-                    test: /\.js$/,
-                    exclude: /(node_modules|bower_components)/,
-                    loader: 'babel',
-                    query: {
-                        presets: ['es2015', 'stage-2', 'stage-3'],
-                        plugins: ['transform-runtime']
-                    }
+gulp.task('js', function () {
+	var webpack_config = {
+		module: {
+			loaders: [
+				{
+					test: /\.js$/,
+					exclude: /(node_modules|bower_components)/,
+					loader: 'babel',
+					query: {
+						presets: ['es2015', 'stage-2', 'stage-3'],
+						plugins: ['transform-runtime']
+					}
 				},
-                {
-                    test: /\.css$/,
-                    loaders: ['style', 'css']
-                },
-                {
-                    test: /\.json$/,
-                    loaders: ['json']
-                },
-                {
-                    test: /\.(scss|sass)$/,
-                    loaders: ['style', 'sass']
-                },
-                {
-                    test: /\.(html|tpl)$/,
-                    loaders: ['html']
-                },
-                {
-                    test: /\.vue$/,
-                    loaders: ['vue']
-                }
+				{
+					test: /\.css$/,
+					loaders: ['style', 'css']
+				},
+				{
+					test: /\.json$/,
+					loaders: ['json']
+				},
+				{
+					test: /\.(scss|sass)$/,
+					loaders: ['style', 'sass']
+				},
+				{
+					test: /\.(html|tpl)$/,
+					loaders: ['html']
+				},
+				{
+					test: /\.vue$/,
+					loaders: ['vue']
+				}
 			]
-        }
-    };
+		}
+	};
 
-    gulp.src('./example/demo.js')
-        .pipe($.plumber({
-            errorHandler: _errrHandler
-        }))
-        .pipe(named(function() {
-            return 'demo-src';
-        }))
-        .pipe(webpack(webpack_config))
-        .pipe(gulp.dest('./example'));
+	gulp.src('./example/demo.js')
+		.pipe($.plumber({
+			errorHandler: _errrHandler
+		}))
+		.pipe(named(function () {
+			return 'demo-src';
+		}))
+		.pipe(webpack(webpack_config))
+		.pipe($.uglify())
+		.pipe(gulp.dest('./example'));
 });
 
-gulp.task('serve', function() {
-    gulp.watch(['./example/demo.js', './datepicker.vue', './scss/*.scss'], ['js']);
+gulp.task('serve', function () {
+	gulp.watch(['./example/demo.js', './datepicker.vue', './scss/*.scss'], ['js']);
 });
 
 gulp.task('default', ['serve']);
@@ -72,6 +73,6 @@ gulp.task('default', ['serve']);
  -------------------------------------------------------------*/
 //错误提示
 function _errrHandler(e) {
-    $.util.beep();
-    $.util.log(e);
+	$.util.beep();
+	$.util.log(e);
 }
