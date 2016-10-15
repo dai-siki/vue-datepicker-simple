@@ -163,6 +163,7 @@
 			monthDays() {
 				let {year, month} = this,
 						dayNum;
+				month += 1;
 				// 判断一个月有几天
 				if (month == 2) {
 					if (year % 4 == 0 && !(year % 100 == 0 && year % 400 != 0)) {
@@ -270,7 +271,7 @@
 			},
 			nextMonth() {
 				let {month} = this;
-				if (month < 12) {
+				if (month < 11) {
 					this.month++;
 				} else {
 					this.year++;
