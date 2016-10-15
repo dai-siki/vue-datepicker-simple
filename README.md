@@ -1,7 +1,10 @@
 # vue-datepicker-simple
 一款非常简单的基于vue的日期选择器
 
-## 更新日志 @1.1.0
+## 更新日志
+### @1.2.0
+- 添加了"向前看"功能（只能选今天及以后）
+### @1.1.0
 - 添加了年份选择功能
 - 可以自定义日期格式
 
@@ -31,7 +34,8 @@ $ npm install vue-datepicker-simple
 	<label for="myDate">选择日期</label>
 	<date-picker field="myDate"
 				 :value.sync="date"
-				 :format="format" ></date-picker>
+				 :format="format"
+				 :forward="forward"></date-picker>
 </div>
 
 <script>
@@ -43,7 +47,8 @@ new Vue({
     el: '#app',
     data:{
         date: '2016/02/28',
-		format: 'yyyy/mm/dd' // 默认yyyy-mm-dd
+		format: 'yyyy/mm/dd', // 默认yyyy-mm-dd
+		forward: true //向前看，只能选今天及以后，默认false
     },
     components:{
         'date-picker': myDatepicker

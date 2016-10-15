@@ -1,10 +1,11 @@
 <template>
 	<div class="vue-datepicker" @mouseout="endChoice" @mouseover="startMouseOver">
 		<input type="text" :name="field" :id="field" :value="value" @click="startChoice" @keypress="startChoice">
+		<!--日期选择-->
 		<div class="vue-datepicker-panel" v-show="dayPanelIsShow">
 			<div class="vue-datepicker-month">
 				<a class="vue-datepicker-prev" @click="prevMonth"> &lt; </a>
-				<span class="vue-datepicker-btn" @click="startChoiceMonth">{{ year }}年 {{ month }}月</span>
+				<span class="vue-datepicker-btn" @click="startChoiceMonth">{{ year }}年 {{ month+1 }}月</span>
 				<a class="vue-datepicker-next" @click="nextMonth"> &gt; </a>
 			</div>
 			<table class="vue-datepicker-tb">
@@ -15,14 +16,15 @@
 				</thead>
 				<tbody>
 				<tr v-for="(mIndex, m) in monthDays" track-by="$index">
-					<td v-for="(dIndex, d) in m" track-by="$index" @click="onChoice(d, $event)"
-						:class="{'z-on' : curr.date==d && curr.month==month && curr.year==year, 'z-existed': d!=''}">
+					<td v-for="(dIndex, d) in m" track-by="$index" @click="choiceDay(d, $event)"
+						:class="classDay(d)">
 						<span>{{ d }}</span>
 					</td>
 				</tr>
 				</tbody>
 			</table>
 		</div>
+		<!--年月选择-->
 		<div class="vue-datepicker-panel" v-show="monthPanelIsShow">
 			<div class="vue-datepicker-month">
 				<a class="vue-datepicker-prev" @click="prevYear"> &lt; </a>
@@ -36,7 +38,7 @@
 				<tbody>
 				<tr v-for="season in monthArr" track-by="$index">
 					<td v-for="m in season" track-by="$index" @click="choiceMonth(m.id)"
-						:class="{'z-on' : m.id==month-1 && curr.year==year, 'z-existed': d!=''}">
+						:class="classMonth(m.id)">
 						<span>{{ m.name }}</span>
 					</td>
 				</tr>
@@ -49,16 +51,13 @@
 <script>
 	'use strict';
 
-	import strPadStart  from 'string.prototype.padstart';
-	strPadStart.shim(); //es7 shim
-
 	//	日期格式化输出
 	function dateFormat(y, m, d, fm) {
 		if (!fm) {
 			fm = 'yyyy-mm-dd';
 		}
-		m = ('' + m).padStart(2, '0');
-		d = ('' + d).padStart(2, '0');
+		m = ('0' + (parseInt(m) + 1)).slice(-2);
+		d = ('0' + d).slice(-2);
 		return fm.replace('yyyy', y)
 				.replace('YYYY', y)
 				.replace('mm', m)
@@ -66,12 +65,46 @@
 				.replace('DD', d)
 				.replace('dd', d);
 	}
+	// 比较两个日期大小，如果date1大于date2返回true，否则false
+	function dateCompare(date1, date2) {
+		if (date1.day && date2.day) {
+			return date1.year > date2.year
+					|| (date1.year == date2.year && date1.month > date2.month)
+					|| (date1.year == date2.year && date1.month == date2.month && date1.day > date2.day);
+		} else {
+			return date1.year > date2.year || (date1.year == date2.year && date1.month > date2.month);
+		}
+	}
 
 	export default {
-		props: ['field', 'value', 'conf', 'format'],
+		props: {
+			field: {
+				type: String,
+				default: 'date'
+			},
+			value: {
+				type: String,
+				default: '',
+				twoWay: true
+			},
+			format: {
+				type: String,
+				default: 'yyyy-mm-dd'
+			},
+			// 向前看，只能选今天及以后
+			forward: {
+				default: false
+			},
+			conf: {
+				type: Object,
+				default: function () {
+					return {};
+				}
+			}
+		},
 		data() {
 			let { value, conf} = this,
-					dateObj, year, month, day, date,
+					dateObj, year, month, day,
 					langConf = {
 						week: ['日', '一', '二', '三', '四', '五', '六'],
 						month: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
@@ -85,9 +118,8 @@
 				langConf = Object.assign(langConf, conf);
 			}
 			year = dateObj.getFullYear();
-			month = dateObj.getMonth() + 1;
-			day = dateObj.getDay();
-			date = dateObj.getDate();
+			month = dateObj.getMonth();
+			day = dateObj.getDate();
 			return {
 				langConf,
 				dayPanelIsShow: false,
@@ -95,11 +127,11 @@
 				isMouseOver: false,
 				year,
 				month,
-				day,
-				date
+				day
 			};
 		},
 		computed: {
+			//	日期二维数组（3*4），渲染用
 			monthArr(){
 				let {month} = this.langConf,
 						res = [];
@@ -113,19 +145,19 @@
 				}
 				return res;
 			},
+			// 当前日期
 			curr(){
 				let {value} = this,
-						dateObj, year, month, day, date;
+						dateObj, year, month, day;
 				if (value) {
 					dateObj = new Date(value);
 				} else {
 					dateObj = new Date();
 				}
 				year = dateObj.getFullYear();
-				month = dateObj.getMonth() + 1;
-				day = dateObj.getDay();
-				date = dateObj.getDate();
-				return {year, month, day, date};
+				month = dateObj.getMonth();
+				day = dateObj.getDate();
+				return {year, month, day};
 			},
 			// 返回当前月的天数数组
 			monthDays() {
@@ -163,48 +195,95 @@
 				}
 
 				return dayArr;
+			},
+			today(){
+				let dateObj = new Date(),
+						year = dateObj.getFullYear(),
+						month = dateObj.getMonth(),
+						day = dateObj.getDate();
+				return {year, month, day};
 			}
 		},
 		methods: {
+			// 年份+月份选择
+			startChoiceMonth(){
+				this.dayPanelIsShow = false;
+				this.monthPanelIsShow = true;
+			},
 			prevYear() {
+				let {year, forward, today} = this;
+				if (forward && today.year >= year) {
+					return false;
+				}
 				this.year--;
 			},
 			nextYear() {
 				this.year++;
 			},
-			choiceMonth(n){
-				this.month = n + 1;
+			choiceMonth(m){
+				let {year ,today, forward} = this;
+				if (forward && (today.year > year || (today.year == year && today.month > m))) {
+					return false;
+				}
+				this.month = m;
 				this.dayPanelIsShow = true;
 				this.monthPanelIsShow = false;
 			},
-			startChoiceMonth(){
-				this.dayPanelIsShow = false;
-				this.monthPanelIsShow = true;
+			// 样式
+			classMonth(m){
+				let {month, year, curr ,today, forward} = this;
+				return {
+					'z-on': m == month && curr.year == year,
+					'z-existed': true,
+					'z-invalid': forward && (today.year > year || (today.year == year && today.month > m) )
+				};
 			},
-			prevMonth() {
-				let {month} = this;
-				if (month > 1) {
-					this.month -= 1;
-				} else {
-					this.year -= 1;
-					this.month = 12;
-				}
+			classDay(d){
+				let {month, year, curr ,today, forward} =this,
+						isValid = forward && dateCompare(today, {year, month, day: d});
+				return {
+					'z-on': curr.day == d && curr.month == month && curr.year == year,
+					'z-existed': d != '',
+					'z-invalid': isValid
+				};
 			},
-			nextMonth() {
-				let {month} = this;
-				if (month < 12) {
-					this.month += 1;
-				} else {
-					this.year += 1;
-					this.month = 1;
-				}
-			},
+
+			// 月份+日期选择
 			startChoice(e) {
 				if (e && e.type == 'keypress') {
 					console.log(e);
 					e.returnValue = false;
 				}
 				this.dayPanelIsShow = true;
+			},
+			prevMonth() {
+				let {year ,month,today, forward} = this;
+				if (forward && (today.year > year || (today.year == year && today.month >= month))) {
+					return false;
+				}
+				if (month > 1) {
+					this.month--;
+				} else {
+					this.year--;
+					this.month = 11;
+				}
+			},
+			nextMonth() {
+				let {month} = this;
+				if (month < 12) {
+					this.month++;
+				} else {
+					this.year++;
+					this.month = 0;
+				}
+			},
+			choiceDay(d) {
+				let {year, month, format, today, forward} = this;
+				if (d !== '' && !(forward && dateCompare(today, {year, month, day: d}))) {
+					this.day = d;
+					this.value = dateFormat(year, month, d, format);
+					this.immEndChoice();
+				}
 			},
 			// 鼠标离开日期选择区域时超过一定时间，关闭日期面板
 			endChoice() {
@@ -223,15 +302,6 @@
 			immEndChoice(){
 				this.isMouseOver = true;
 				this.dayPanelIsShow = false;
-			},
-			onChoice(d, e) {
-				e.preventDefault();
-				if (d !== '') {
-					let {year, month, format} = this;
-					this.date = d;
-					this.value = dateFormat(year, month, d, format);
-					this.immEndChoice();
-				}
 			}
 		}
 	}

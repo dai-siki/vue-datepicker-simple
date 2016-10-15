@@ -1,6 +1,6 @@
 {
   "name": "vue-datepicker-simple",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "一款非常简单的基于vue的日期选择插件",
   "main": "datepicker.vue",
   "scripts": {
@@ -22,9 +22,7 @@
     "url": "https://github.com/dai-siki/vue-datepicker-simple/issues"
   },
   "homepage": "https://github.com/dai-siki/vue-datepicker-simple#readme",
-  "dependencies": {
-    "string.prototype.padstart": "^3.0.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "babel": "^6.5.2",
     "babel-core": "^6.17.0",

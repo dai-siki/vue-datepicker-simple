@@ -101,6 +101,15 @@ $w: 35px;
 									background-color: $c1;
 								}
 							}
+							&.z-invalid {
+								cursor: default;
+								span {
+									color: #ccc;
+								}
+								&:hover {
+									background-color: transparent;
+								}
+							}
 						}
 					}
 				}

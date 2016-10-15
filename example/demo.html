@@ -24,9 +24,9 @@
 <body>
 <div id="app">
 	<label for="myDate">选择日期</label>
-	<date-picker field="myDate"
+	<date-picker field="myDate" :forward="true"
 				 :value.sync="date"
-				 :format="format" ></date-picker>
+				 :format="format"></date-picker>
 </div>
 
 <script src="demo-src.js"></script>
