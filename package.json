@@ -1,6 +1,6 @@
 {
   "name": "vue-datepicker-simple",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "一款非常简单的基于vue的日期选择插件",
   "main": "datepicker.vue",
   "scripts": {
