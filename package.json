@@ -1,6 +1,6 @@
 {
   "name": "vue-datepicker-simple",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "一款非常简单的基于vue的日期选择插件",
   "main": "datepicker.vue",
   "scripts": {
@@ -37,11 +37,11 @@
     "classnames": "^2.2.5",
     "css-loader": "^0.23.1",
     "gulp": "^3.8.8",
+    "gulp-autoprefixer": "^3.1.1",
     "gulp-changed": "^1.3.0",
-    "gulp-clean": "^0.3.2",
-    "gulp-clean-css": "^2.0.8",
     "gulp-load-plugins": "^1.2.4",
     "gulp-plumber": "^1.1.0",
+    "gulp-sass": "^2.3.2",
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.6",

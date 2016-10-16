@@ -13,6 +13,13 @@ const $ = require('gulp-load-plugins')(),
 /** 开发
  -------------------------------------------------------------*/
 
+gulp.task('css', function () {
+	gulp.src('./scss/*.scss')
+		.pipe($.sass())
+		.pipe($.autoprefixer('last 10 version'))
+		.pipe(gulp.dest('./'))
+});
+
 // jS task
 gulp.task('js', function () {
 	var webpack_config = {
@@ -65,6 +72,7 @@ gulp.task('js', function () {
 
 gulp.task('serve', function () {
 	gulp.watch(['./example/demo.js', './datepicker.vue', './scss/*.scss'], ['js']);
+	gulp.watch(['./scss/*.scss'], ['css']);
 });
 
 gulp.task('default', ['serve']);
