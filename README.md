@@ -41,6 +41,7 @@ $ npm install vue-datepicker-simple
 |format            |String            |'yyyy-mm-dd'     | 日期格式                                    |
 |type              |Boolean           |false            | 是否向前看（只能选择今天及以后）              |
 
+---------------------------
 
 ```html
 
