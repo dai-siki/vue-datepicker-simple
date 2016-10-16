@@ -23,8 +23,9 @@
 
 <body>
 <div id="app">
-	<label for="myDate">选择日期</label>
-	<date-picker field="myDate" :forward="true"
+	<label for="myDate">选择您的新婚之日</label>
+	<date-picker field="myDate" placeholder="选择日期"
+				 :forward="true"
 				 :value.sync="date"
 				 :format="format"></date-picker>
 </div>

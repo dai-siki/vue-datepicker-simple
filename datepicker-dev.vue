@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-datepicker" @mouseout="endChoice" @mouseover="startMouseOver">
-		<input type="text" :name="field" :id="field" :value="value" @click="startChoice" @keypress="startChoice">
+		<input type="text" :name="field" :id="field" :value="value" :placeholder="placeholder" @click="startChoice" @keypress="startChoice">
 		<!--日期选择-->
 		<div class="vue-datepicker-panel" v-show="dayPanelIsShow">
 			<div class="vue-datepicker-month">
@@ -80,7 +80,7 @@
 		props: {
 			field: {
 				type: String,
-				default: 'date'
+				default: ''
 			},
 			value: {
 				type: String,
@@ -94,6 +94,10 @@
 			// 向前看，只能选今天及以后
 			forward: {
 				default: false
+			},
+			placeholder: {
+				type: String,
+				default: ''
 			},
 			conf: {
 				type: Object,

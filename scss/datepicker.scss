@@ -1,5 +1,5 @@
 $grey1: #DDD;
-$grey2: #F5F5F5;
+$grey2: #F5F6F7;
 $c1: #d0000e;
 $w: 35px;
 
@@ -20,6 +20,7 @@ $w: 35px;
 		height: 28px;
 		padding-left: 6px;
 		border: 1px solid $grey1;
+		outline: none;
 	}
 	.vue-datepicker-panel {
 		position: absolute;
@@ -88,8 +89,8 @@ $w: 35px;
 							cursor: pointer;
 							span {
 								display: block;
-								height: $w*0.65;
-								line-height: $w*0.65;
+								height: $w*0.62;
+								line-height: $w*0.62;
 							}
 							&:hover {
 								background-color: $grey2;
