@@ -10,6 +10,9 @@
 
 ## 更新日志
 
+### @1.4.0
+- 兼容vue@2.0+（需要引入对应的组件，绑定value语法有不同，参考示例2）
+
 ### @1.3.0
 - 添加了"placeholder"属性
 
@@ -23,7 +26,9 @@
 
 ## demo
 
-简单的示例 [点我](http://dai-siki.github.io/vue-datepicker-simple/example/demo.html).
+简单的示例1（vue@1.0+） [点我](http://dai-siki.github.io/vue-datepicker-simple/example/demo.html).
+
+简单的示例2（vue@2.0+） [点我](http://dai-siki.github.io/vue-datepicker-simple/example2/demo.html).
 
 
 ## 截图
@@ -34,7 +39,7 @@
 
 ## 依赖
 
-基于 vue.js@1.0+ 版本。模块使用es6编写（需babel转译）。
+基于 vue.js@1.0+ 和 vue.js@2.0+ 版本。模块使用es6编写（需babel转译）。
 
 
 ## 安装
@@ -53,14 +58,14 @@ $ npm install vue-datepicker-simple
 
 | 名称              | 类型               | 默认             | 说明                                         |
 | ----------------- | ----------------- | ---------------- | --------------------------------------------- |
-| value             | String twoWay     | today            | 要绑定的日期变量,值为空则日期面板初始化今天    |
+| value             | String         | today            | 要绑定的日期变量,值为空则日期面板初始化今天    |
 | field             | String            | ""               | 会给input标签添加name及id                   |
 | format            | String            | 'yyyy-mm-dd'     | 日期格式                                    |
 | forward           | Boolean           | false            | 是否向前看（只能选择今天及以后）              |
 | placeholder       | String            | ""               | 你懂的                                     |
 
 
-#### 示例
+#### 示例(vue@1.0+)
 
 ```html
 
@@ -77,6 +82,38 @@ $ npm install vue-datepicker-simple
 import 'babel-polyfill'; //因为使用了es6的一些方法，需要babel垫片，如果你项目中已有相关兼容性方案，可忽略
 import Vue from 'vue';
 import myDatepicker from 'vue-datepicker-simple';
+
+new Vue({
+    el: '#app',
+    data:{
+        date: ''
+    },
+    components:{
+        'date-picker': myDatepicker
+    }
+});
+
+</script>
+
+```
+
+#### 示例(vue@2.0+)
+
+```html
+
+<div id="app">
+	<label for="myDate">选择您的新婚之日</label>
+	<date-picker field="myDate"
+				 placeholder="选择日期"
+				 v-model="date"
+				 format="yyyy/mm/dd"
+				 :forward="true"></date-picker>
+</div>
+
+<script>
+import 'babel-polyfill'; //因为使用了es6的一些方法，需要babel垫片，如果你项目中已有相关兼容性方案，可忽略
+import Vue from 'vue';
+import myDatepicker from 'vue-datepicker-simple/datepicker-2.vue'; //引入对应的组件
 
 new Vue({
     el: '#app',

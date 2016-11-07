@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>demo2</title>
+	<style media="screen">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			padding: 50px;
+		}
+
+		#app label {
+			display: block;
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<label for="myDate">选择您的新婚之日</label>
+		<date-picker field="myDate" placeholder="选择日期" v-model="date" :forward="true" :format="format"></date-picker>
+	</div>
+
+	<script src="vue.js"></script>
+	<script src="demo-src.js"></script>
+</body>
+
+</html>
