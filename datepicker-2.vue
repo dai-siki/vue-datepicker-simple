@@ -299,7 +299,6 @@ export default {
 		// 月份+日期选择
 		startChoice(e) {
 			if (e && e.type == 'keypress') {
-				console.log(e);
 				e.returnValue = false;
 			}
 			this.dayPanelIsShow = true;
