@@ -1,6 +1,6 @@
 <template>
 <div class="vue-datepicker" @mouseout="endChoice" @mouseover="startMouseOver">
-	<input type="text" :name="field" :id="field" :value="value" :placeholder="placeholder" @click="startChoice" @keypress="startChoice">
+	<input type="text" autocomplete="off" disableautocomplete :name="field" :id="field" :value="value" :placeholder="placeholder" @click="startChoice" @keypress="startChoice">
 	<!--日期选择-->
 	<div class="vue-datepicker-panel" v-show="dayPanelIsShow">
 		<div class="vue-datepicker-month">
