@@ -10,33 +10,38 @@ $w: 35px;
 	font-family: verdana;
 	font-size: 14px;
 	color: #666;
+
 	* {
 		margin: 0;
 		padding: 0;
 	}
+
 	input {
 		display: block;
-		width: $w*7;
+		width: $w * 7;
 		height: 28px;
 		padding-left: 6px;
 		border: 1px solid $grey1;
 		outline: none;
 	}
+
 	.vue-datepicker-panel {
 		position: absolute;
 		z-index: 99999;
 		left: 0;
 		background-color: #FFF;
-		width: $w*7;
+		width: $w * 7;
 		border: 1px solid $grey1;
-		box-shadow: 0 0 10px 0 $grey1;
+		box-shadow: 2px 2px 4px 0 #e5e5e5;
 		padding: 10px 6px;
+
 		.vue-datepicker-month {
 			padding-bottom: 4px;
 			height: $w;
 			line-height: $w;
 			overflow: hidden;
 			text-align: center;
+
 			a {
 				float: left;
 				display: block;
@@ -44,14 +49,17 @@ $w: 35px;
 				cursor: pointer;
 				color: #999;
 				font-size: 12px;
+
 				&:hover {
 					background-color: $grey2;
 				}
 			}
+
 			span {
 				float: left;
 				display: block;
-				width: $w*5;
+				width: $w * 5;
+
 				&.vue-datepicker-btn {
 					&:hover {
 						background-color: $grey2;
@@ -60,18 +68,23 @@ $w: 35px;
 				}
 			}
 		}
-		.vue-datepicker-tb, .vue-datepicker-tb2 {
-			width: $w*7;
+
+		.vue-datepicker-tb,
+		.vue-datepicker-tb2 {
+			width: $w * 7;
 			border-collapse: collapse;
 			text-align: center;
+
 			thead {
 				background-color: $grey2;
 				height: $w;
 				line-height: $w;
 				border-top: 1px solid $grey1;
 				border-bottom: 1px solid $grey1;
+
 				tr {
 					border: none;
+
 					th {
 						width: $w;
 						font-size: 12px;
@@ -80,33 +93,42 @@ $w: 35px;
 					}
 				}
 			}
+
 			tbody {
 				tr {
 					border-top: 1px solid #EEE;
+
 					td {
-						height: $w*0.9;
+						height: $w * 0.9;
+
 						&.z-existed {
 							cursor: pointer;
+
 							span {
 								display: block;
-								height: $w*0.62;
-								line-height: $w*0.62;
+								height: $w * 0.62;
+								line-height: $w * 0.62;
 							}
+
 							&:hover {
 								background-color: $grey2;
 								color: $c1;
 							}
+
 							&.z-on {
 								span {
 									color: #FFF;
 									background-color: $c1;
 								}
 							}
+
 							&.z-invalid {
 								cursor: default;
+
 								span {
 									color: #ccc;
 								}
+
 								&:hover {
 									background-color: transparent;
 								}
@@ -116,20 +138,24 @@ $w: 35px;
 				}
 			}
 		}
+
 		.vue-datepicker-tb2 {
 			tbody {
 				tr {
 					border-top: 1px solid #EEE;
+
 					td {
-						height: $w*0.9;
+						height: $w * 0.9;
 						padding: 4px 10px;
 						font-size: 13px;
+
 						&.z-existed {
 							cursor: pointer;
+
 							span {
 								display: block;
-								height: $w*0.65;
-								line-height: $w*0.65;
+								height: $w * 0.65;
+								line-height: $w * 0.65;
 							}
 						}
 					}

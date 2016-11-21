@@ -336,8 +336,8 @@
     background-color: #FFF;
     width: 245px;
     border: 1px solid #DDD;
-    -webkit-box-shadow: 0 0 10px 0 #DDD;
-            box-shadow: 0 0 10px 0 #DDD;
+    -webkit-box-shadow: 2px 2px 4px 0 #e5e5e5;
+            box-shadow: 2px 2px 4px 0 #e5e5e5;
     padding: 10px 6px; }
     .vue-datepicker .vue-datepicker-panel .vue-datepicker-month {
       padding-bottom: 4px;
@@ -361,44 +361,57 @@
         .vue-datepicker .vue-datepicker-panel .vue-datepicker-month span.vue-datepicker-btn:hover {
           background-color: #F5F6F7;
           cursor: pointer; }
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 {
+    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb,
+    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 {
       width: 245px;
       border-collapse: collapse;
       text-align: center; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead {
+      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead,
+      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead {
         background-color: #F5F6F7;
         height: 35px;
         line-height: 35px;
         border-top: 1px solid #DDD;
         border-bottom: 1px solid #DDD; }
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead tr, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead tr {
+        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead tr,
+        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead tr {
           border: none; }
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead tr th, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead tr th {
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead tr th,
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead tr th {
             width: 35px;
             font-size: 12px;
             border: none;
             font-weight: normal; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr {
+      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr,
+      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr {
         border-top: 1px solid #EEE; }
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td {
+        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td,
+        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td {
           height: 31.5px; }
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed {
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed,
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed {
             cursor: pointer; }
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed span, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed span {
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed span,
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed span {
               display: block;
               height: 21.7px;
               line-height: 21.7px; }
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed:hover, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed:hover {
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed:hover,
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed:hover {
               background-color: #F5F6F7;
               color: #d0000e; }
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-on span, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-on span {
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-on span,
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-on span {
               color: #FFF;
               background-color: #d0000e; }
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid {
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid,
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid {
               cursor: default; }
-              .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid span, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid span {
+              .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid span,
+              .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid span {
                 color: #ccc; }
-              .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid:hover, .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid:hover {
+              .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid:hover,
+              .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid:hover {
                 background-color: transparent; }
     .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr {
       border-top: 1px solid #EEE; }
@@ -412,4 +425,5 @@
             display: block;
             height: 22.75px;
             line-height: 22.75px; }
+
 </style>
