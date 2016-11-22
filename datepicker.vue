@@ -1,6 +1,6 @@
 <template>
 	<div class="vue-datepicker" @mouseout="endChoice" @mouseover="startMouseOver">
-		<input type="text" autocomplete="off" disableautocomplete :name="field" :id="field" :value="value" :placeholder="placeholder" @click="startChoice" @keypress="startChoice">
+		<input type="text" autocomplete="off" disableautocomplete :name="field" :id="field" :value="value" :placeholder="placeholder" @click="startChoice" @keypress="startChoice" @blur="endChoice" v-el:input>
 		<!--日期选择-->
 		<div class="vue-datepicker-panel" v-show="dayPanelIsShow">
 			<div class="vue-datepicker-month">
@@ -290,11 +290,14 @@
 				}
 			},
 			// 鼠标离开日期选择区域时超过一定时间，关闭日期面板
-			endChoice() {
-				let that = this;
-				that.isMouseOver = false;
-				setTimeout(function () {
-					if (!that.isMouseOver) {
+			endChoice(e) {
+				let that = this,
+					inputEle = that.$els.input;
+				if(e.type == 'mouseout') {
+					that.isMouseOver = false;
+				}
+				setTimeout(function() {
+					if (!that.isMouseOver && inputEle != document.activeElement) {
 						that.dayPanelIsShow = false;
 					}
 				}, 1000);
