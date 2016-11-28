@@ -1,49 +1,51 @@
 <template>
 	<div class="vue-datepicker" @mouseout="endChoice" @mouseover="startMouseOver">
 		<input type="text" autocomplete="off" disableautocomplete :name="field" :id="field" :value="value" :placeholder="placeholder" @click="startChoice" @keypress="startChoice" @blur="endChoice" v-el:input>
-		<!--日期选择-->
-		<div class="vue-datepicker-panel" v-show="dayPanelIsShow">
-			<div class="vue-datepicker-month">
-				<a class="vue-datepicker-prev" @click="prevMonth"> &lt; </a>
-				<span class="vue-datepicker-btn" @click="startChoiceMonth">{{ year }}年 {{ month+1 }}月</span>
-				<a class="vue-datepicker-next" @click="nextMonth"> &gt; </a>
+		<div class="vue-datepicker-panels" v-show="dayPanelIsShow || monthPanelIsShow">
+			<!--日期选择-->
+			<div class="vue-datepicker-panel" v-show="dayPanelIsShow">
+				<div class="vue-datepicker-month">
+					<a class="vue-datepicker-prev" @click="prevMonth"> &lt; </a>
+					<span class="vue-datepicker-btn" @click="startChoiceMonth">{{ year }}年 {{ month+1 }}月</span>
+					<a class="vue-datepicker-next" @click="nextMonth"> &gt; </a>
+				</div>
+				<table class="vue-datepicker-tb">
+					<thead>
+					<tr>
+						<th v-for="d in langConf.week">{{ d }}</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr v-for="(mIndex, m) in monthDays" track-by="$index">
+						<td v-for="(dIndex, d) in m" track-by="$index" @click="choiceDay(d, $event)"
+							:class="classDay(d)">
+							<span>{{ d }}</span>
+						</td>
+					</tr>
+					</tbody>
+				</table>
 			</div>
-			<table class="vue-datepicker-tb">
-				<thead>
-				<tr>
-					<th v-for="d in langConf.week">{{ d }}</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr v-for="(mIndex, m) in monthDays" track-by="$index">
-					<td v-for="(dIndex, d) in m" track-by="$index" @click="choiceDay(d, $event)"
-						:class="classDay(d)">
-						<span>{{ d }}</span>
-					</td>
-				</tr>
-				</tbody>
-			</table>
-		</div>
-		<!--年月选择-->
-		<div class="vue-datepicker-panel" v-show="monthPanelIsShow">
-			<div class="vue-datepicker-month">
-				<a class="vue-datepicker-prev" @click="prevYear"> &lt; </a>
-				<span>{{ year }}年</span>
-				<a class="vue-datepicker-next" @click="nextYear"> &gt; </a>
+			<!--年月选择-->
+			<div class="vue-datepicker-panel" v-show="monthPanelIsShow">
+				<div class="vue-datepicker-month">
+					<a class="vue-datepicker-prev" @click="prevYear"> &lt; </a>
+					<span>{{ year }}年</span>
+					<a class="vue-datepicker-next" @click="nextYear"> &gt; </a>
+				</div>
+				<table class="vue-datepicker-tb2">
+					<col width="33%"/>
+					<col width="33%"/>
+					<col width="33%"/>
+					<tbody>
+					<tr v-for="season in monthArr" track-by="$index">
+						<td v-for="m in season" track-by="$index" @click="choiceMonth(m.id)"
+							:class="classMonth(m.id)">
+							<span>{{ m.name }}</span>
+						</td>
+					</tr>
+					</tbody>
+				</table>
 			</div>
-			<table class="vue-datepicker-tb2">
-				<col width="33%"/>
-				<col width="33%"/>
-				<col width="33%"/>
-				<tbody>
-				<tr v-for="season in monthArr" track-by="$index">
-					<td v-for="m in season" track-by="$index" @click="choiceMonth(m.id)"
-						:class="classMonth(m.id)">
-						<span>{{ m.name }}</span>
-					</td>
-				</tr>
-				</tbody>
-			</table>
 		</div>
 	</div>
 </template>
@@ -300,7 +302,7 @@
 					if (!that.isMouseOver && inputEle != document.activeElement) {
 						that.dayPanelIsShow = false;
 					}
-				}, 1000);
+				}, 800);
 			},
 			startMouseOver(){
 				this.isMouseOver = true;
@@ -315,6 +317,26 @@
 </script>
 
 <style scoped>
+@-webkit-keyframes vueDatePicker {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate(-50%, -50%) scale(0);
+            transform: translate(-50%, -50%) scale(0); }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate(0) scale(1);
+            transform: translate(0) scale(1); } }
+
+@keyframes vueDatePicker {
+  0% {
+    opacity: 0;
+    -webkit-transform: translate(-50%, -50%) scale(0);
+            transform: translate(-50%, -50%) scale(0); }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate(0) scale(1);
+            transform: translate(0) scale(1); } }
+
 .vue-datepicker {
   position: relative;
   margin: 0;
@@ -332,101 +354,102 @@
     padding-left: 6px;
     border: 1px solid #DDD;
     outline: none; }
-  .vue-datepicker .vue-datepicker-panel {
+  .vue-datepicker .vue-datepicker-panels {
     position: absolute;
     z-index: 99999;
     left: 0;
     background-color: #FFF;
     width: 245px;
     border: 1px solid #DDD;
-    -webkit-box-shadow: 2px 2px 4px 0 #e5e5e5;
-            box-shadow: 2px 2px 4px 0 #e5e5e5;
-    padding: 10px 6px; }
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-month {
-      padding-bottom: 4px;
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.18);
+            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.18);
+    padding: 10px 6px;
+    -webkit-animation: vueDatePicker 0.1s ease-out;
+            animation: vueDatePicker 0.1s ease-out; }
+  .vue-datepicker .vue-datepicker-panel .vue-datepicker-month {
+    padding-bottom: 4px;
+    height: 35px;
+    line-height: 35px;
+    overflow: hidden;
+    text-align: center; }
+    .vue-datepicker .vue-datepicker-panel .vue-datepicker-month a {
+      float: left;
+      display: block;
+      width: 35px;
+      cursor: pointer;
+      color: #999;
+      font-size: 12px; }
+      .vue-datepicker .vue-datepicker-panel .vue-datepicker-month a:hover {
+        background-color: #F5F6F7; }
+    .vue-datepicker .vue-datepicker-panel .vue-datepicker-month span {
+      float: left;
+      display: block;
+      width: 175px; }
+      .vue-datepicker .vue-datepicker-panel .vue-datepicker-month span.vue-datepicker-btn:hover {
+        background-color: #F5F6F7;
+        cursor: pointer; }
+  .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb,
+  .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 {
+    width: 245px;
+    border-collapse: collapse;
+    text-align: center; }
+    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead,
+    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead {
+      background-color: #F5F6F7;
       height: 35px;
       line-height: 35px;
-      overflow: hidden;
-      text-align: center; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-month a {
-        float: left;
-        display: block;
-        width: 35px;
-        cursor: pointer;
-        color: #999;
-        font-size: 12px; }
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-month a:hover {
-          background-color: #F5F6F7; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-month span {
-        float: left;
-        display: block;
-        width: 175px; }
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-month span.vue-datepicker-btn:hover {
-          background-color: #F5F6F7;
-          cursor: pointer; }
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb,
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 {
-      width: 245px;
-      border-collapse: collapse;
-      text-align: center; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead,
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead {
-        background-color: #F5F6F7;
-        height: 35px;
-        line-height: 35px;
-        border-top: 1px solid #DDD;
-        border-bottom: 1px solid #DDD; }
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead tr,
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead tr {
-          border: none; }
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead tr th,
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead tr th {
-            width: 35px;
-            font-size: 12px;
-            border: none;
-            font-weight: normal; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr,
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr {
-        border-top: 1px solid #EEE; }
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td,
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td {
-          height: 31.5px; }
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed,
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed {
-            cursor: pointer; }
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed span,
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed span {
-              display: block;
-              height: 21.7px;
-              line-height: 21.7px; }
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed:hover,
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed:hover {
-              background-color: #F5F6F7;
-              color: #d0000e; }
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-on span,
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-on span {
-              color: #FFF;
-              background-color: #d0000e; }
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid,
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid {
-              cursor: default; }
-              .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid span,
-              .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid span {
-                color: #ccc; }
-              .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid:hover,
-              .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid:hover {
-                background-color: transparent; }
+      border-top: 1px solid #DDD;
+      border-bottom: 1px solid #DDD; }
+      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead tr,
+      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead tr {
+        border: none; }
+        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead tr th,
+        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead tr th {
+          width: 35px;
+          font-size: 12px;
+          border: none;
+          font-weight: normal; }
+    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr,
     .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr {
       border-top: 1px solid #EEE; }
+      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td,
       .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td {
-        height: 31.5px;
-        padding: 4px 10px;
-        font-size: 13px; }
+        height: 31.5px; }
+        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed,
         .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed {
           cursor: pointer; }
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed span,
           .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed span {
             display: block;
-            height: 22.75px;
-            line-height: 22.75px; }
-
+            height: 21.7px;
+            line-height: 21.7px; }
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed:hover,
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed:hover {
+            background-color: #F5F6F7;
+            color: #d0000e; }
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-on span,
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-on span {
+            color: #FFF;
+            background-color: #d0000e; }
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid,
+          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid {
+            cursor: default; }
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid span,
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid span {
+              color: #ccc; }
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid:hover,
+            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid:hover {
+              background-color: transparent; }
+  .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr {
+    border-top: 1px solid #EEE; }
+    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td {
+      height: 31.5px;
+      padding: 4px 10px;
+      font-size: 13px; }
+      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed {
+        cursor: pointer; }
+        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed span {
+          display: block;
+          height: 22.75px;
+          line-height: 22.75px; }
 </style>

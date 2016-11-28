@@ -2,6 +2,17 @@ $grey1: #DDD;
 $grey2: #F5F6F7;
 $c1: #d0000e;
 $w: 35px;
+@keyframes vueDatePicker {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translate(0) scale(1);
+	}
+}
 
 .vue-datepicker {
 	position: relative;
@@ -25,16 +36,19 @@ $w: 35px;
 		outline: none;
 	}
 
-	.vue-datepicker-panel {
+	.vue-datepicker-panels {
 		position: absolute;
 		z-index: 99999;
 		left: 0;
 		background-color: #FFF;
 		width: $w * 7;
 		border: 1px solid $grey1;
-		box-shadow: 2px 2px 4px 0 #e5e5e5;
+		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.18);
 		padding: 10px 6px;
+		animation: vueDatePicker 0.1s ease-out;
+	}
 
+	.vue-datepicker-panel {
 		.vue-datepicker-month {
 			padding-bottom: 4px;
 			height: $w;

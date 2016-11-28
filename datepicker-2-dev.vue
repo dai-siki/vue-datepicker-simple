@@ -1,47 +1,49 @@
 <template>
 <div class="vue-datepicker" @mouseout="endChoice" @mouseover="startMouseOver">
 	<input type="text" autocomplete="off" disableautocomplete :name="field" :id="field" :value="value" :placeholder="placeholder" @click="startChoice" @keypress="startChoice" @blur="endChoice" ref="input">
-	<!--日期选择-->
-	<div class="vue-datepicker-panel" v-show="dayPanelIsShow">
-		<div class="vue-datepicker-month">
-			<a class="vue-datepicker-prev" @click="prevMonth"> &lt; </a>
-			<span class="vue-datepicker-btn" @click="startChoiceMonth">{{ year }}年 {{ month+1 }}月</span>
-			<a class="vue-datepicker-next" @click="nextMonth"> &gt; </a>
+	<div class="vue-datepicker-panels" v-show="dayPanelIsShow || monthPanelIsShow">
+		<!--日期选择-->
+		<div class="vue-datepicker-panel" v-show="dayPanelIsShow">
+			<div class="vue-datepicker-month">
+				<a class="vue-datepicker-prev" @click="prevMonth"> &lt; </a>
+				<span class="vue-datepicker-btn" @click="startChoiceMonth">{{ year }}年 {{ month+1 }}月</span>
+				<a class="vue-datepicker-next" @click="nextMonth"> &gt; </a>
+			</div>
+			<table class="vue-datepicker-tb">
+				<thead>
+					<tr>
+						<th v-for="d in langConf.week">{{ d }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(m, mIndex) in monthDays" :key="mIndex">
+						<td v-for="(d, dIndex) in m" :key="dIndex" @click="choiceDay(d, $event)" :class="classDay(d)">
+							<span>{{ d }}</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<table class="vue-datepicker-tb">
-			<thead>
-				<tr>
-					<th v-for="d in langConf.week">{{ d }}</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="(m, mIndex) in monthDays" :key="mIndex">
-					<td v-for="(d, dIndex) in m" :key="dIndex" @click="choiceDay(d, $event)" :class="classDay(d)">
-						<span>{{ d }}</span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<!--年月选择-->
-	<div class="vue-datepicker-panel" v-show="monthPanelIsShow">
-		<div class="vue-datepicker-month">
-			<a class="vue-datepicker-prev" @click="prevYear"> &lt; </a>
-			<span>{{ year }}年</span>
-			<a class="vue-datepicker-next" @click="nextYear"> &gt; </a>
+		<!--年月选择-->
+		<div class="vue-datepicker-panel" v-show="monthPanelIsShow">
+			<div class="vue-datepicker-month">
+				<a class="vue-datepicker-prev" @click="prevYear"> &lt; </a>
+				<span>{{ year }}年</span>
+				<a class="vue-datepicker-next" @click="nextYear"> &gt; </a>
+			</div>
+			<table class="vue-datepicker-tb2">
+				<col width="33%" />
+				<col width="33%" />
+				<col width="33%" />
+				<tbody>
+					<tr v-for="(season, sIndex) in monthArr" :key="sIndex">
+						<td v-for="(m, mIndex) in season" :key="mIndex" @click="choiceMonth(m.id)" :class="classMonth(m.id)">
+							<span>{{ m.name }}</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<table class="vue-datepicker-tb2">
-			<col width="33%" />
-			<col width="33%" />
-			<col width="33%" />
-			<tbody>
-				<tr v-for="(season, sIndex) in monthArr" :key="sIndex">
-					<td v-for="(m, mIndex) in season" :key="mIndex" @click="choiceMonth(m.id)" :class="classMonth(m.id)">
-						<span>{{ m.name }}</span>
-					</td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
 </div>
 
@@ -360,7 +362,7 @@ export default {
 				if (!that.isMouseOver && inputEle != document.activeElement) {
 					that.dayPanelIsShow = false;
 				}
-			}, 1000);
+			}, 300);
 		},
 		startMouseOver() {
 			this.isMouseOver = true;
