@@ -302,7 +302,7 @@
 					if (!that.isMouseOver && inputEle != document.activeElement) {
 						that.dayPanelIsShow = false;
 					}
-				}, 800);
+				}, 300);
 			},
 			startMouseOver(){
 				this.isMouseOver = true;
