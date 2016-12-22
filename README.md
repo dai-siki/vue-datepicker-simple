@@ -24,8 +24,9 @@
 
 
 ## Demo （示例
-Click me（vue@1.0+） [点我](http://dai-siki.github.io/vue-datepicker-simple/example/demo.html).
-Click me（vue@2.0+） [点我](http://dai-siki.github.io/vue-datepicker-simple/example2/demo.html).
+vue@1.0+ [Click me 点我](http://dai-siki.github.io/vue-datepicker-simple/example/demo.html).
+
+vue@2.0+ [Click me 点我](http://dai-siki.github.io/vue-datepicker-simple/example2/demo.html).
 
 
 ## Screenshot （截图
