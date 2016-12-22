@@ -67,14 +67,20 @@
 				.replace('DD', d)
 				.replace('dd', d);
 	}
-	// 比较两个日期大小，如果date1大于date2返回true，否则false
+	// 比较两个日期大小，返回 -1 0 1
 	function dateCompare(date1, date2) {
-		if (date1.day && date2.day) {
-			return date1.year > date2.year
-					|| (date1.year == date2.year && date1.month > date2.month)
-					|| (date1.year == date2.year && date1.month == date2.month && date1.day > date2.day);
-		} else {
-			return date1.year > date2.year || (date1.year == date2.year && date1.month > date2.month);
+		if(date1.year == date2.year){
+			if(date1.day && date2.day) {
+				if(date1.month == date2.month){
+					return date1.day > date2.day ? 1 : (date1.day == date2.day ? 0 : -1);
+				}else {
+					return date1.month > date2.month ? 1 : -1;
+				}
+			}else {
+				return date1.month > date2.month ? 1 : (date1.month == date2.month ? 0 : -1);
+			}
+		}else {
+			return date1.year > date2.year ? 1: -1;
 		}
 	}
 
@@ -93,8 +99,16 @@
 				type: String,
 				default: 'yyyy-mm-dd'
 			},
+			// 不能选今天
+			noToday: {
+				default: false
+			},
 			// 向前看，只能选今天及以后
 			forward: {
+				default: false
+			},
+			// 向后看
+			backward: {
 				default: false
 			},
 			placeholder: {
@@ -205,13 +219,27 @@
 			},
 			today(){
 				let dateObj = new Date(),
-						year = dateObj.getFullYear(),
-						month = dateObj.getMonth(),
-						day = dateObj.getDate();
+					year = dateObj.getFullYear(),
+					month = dateObj.getMonth(),
+					day = dateObj.getDate();
 				return {year, month, day};
 			}
 		},
 		methods: {
+			// 判断日期是否合法 dateObj格式{year,month,day}
+			dateIsValid(dateObj){
+				let {today, forward, backward, noToday} = this;
+				if(forward && dateCompare(today, dateObj) > 0){
+					return false;
+				}
+				if(backward && dateCompare(today, dateObj) < 0){
+					return false;
+				}
+				if(noToday && dateObj.day && dateCompare(today, dateObj) == 0){
+					return false;
+				}
+				return true;
+			},
 			// 年份+月份选择
 			startChoiceMonth(){
 				this.dayPanelIsShow = false;
@@ -225,33 +253,37 @@
 				this.year--;
 			},
 			nextYear() {
+				let {year, backward, today} = this;
+				if (backward && today.year <= year) {
+					return false;
+				}
 				this.year++;
 			},
 			choiceMonth(m){
-				let {year ,today, forward} = this;
-				if (forward && (today.year > year || (today.year == year && today.month > m))) {
-					return false;
+				let {year} = this;
+				if (this.dateIsValid({year, month: m})) {
+					this.month = m;
+					this.dayPanelIsShow = true;
+					this.monthPanelIsShow = false;
 				}
-				this.month = m;
-				this.dayPanelIsShow = true;
-				this.monthPanelIsShow = false;
 			},
 			// 样式
 			classMonth(m){
-				let {month, year, curr ,today, forward} = this;
+				let that = this,
+					{month, year, curr} = that;
 				return {
 					'z-on': m == month && curr.year == year,
 					'z-existed': true,
-					'z-invalid': forward && (today.year > year || (today.year == year && today.month > m) )
+					'z-invalid': !that.dateIsValid({year, month:m})
 				};
 			},
 			classDay(d){
-				let {month, year, curr ,today, forward} =this,
-						isValid = forward && dateCompare(today, {year, month, day: d});
+				let that = this,
+					{month, year, curr} = that;
 				return {
 					'z-on': curr.day == d && curr.month == month && curr.year == year,
 					'z-existed': d != '',
-					'z-invalid': isValid
+					'z-invalid': !that.dateIsValid({year, month, day:d})
 				};
 			},
 
@@ -260,32 +292,36 @@
 				if (e && e.type == 'keypress') {
 					e.returnValue = false;
 				}
-				this.dayPanelIsShow = true;
+				if(!this.dayPanelIsShow && !this.monthPanelIsShow){
+					this.dayPanelIsShow = true;
+				}
+				this.$dispatch('datepickerStart', this.field);
 			},
 			prevMonth() {
-				let {year ,month,today, forward} = this;
-				if (forward && (today.year > year || (today.year == year && today.month >= month))) {
-					return false;
-				}
-				if (month > 1) {
-					this.month--;
-				} else {
-					this.year--;
-					this.month = 11;
+				let {year ,month} = this;
+				if (this.dateIsValid({year, month: month-1})) {
+					if (month > 1) {
+						this.month--;
+					} else {
+						this.year--;
+						this.month = 11;
+					}
 				}
 			},
 			nextMonth() {
-				let {month} = this;
-				if (month < 11) {
-					this.month++;
-				} else {
-					this.year++;
-					this.month = 0;
+				let {year ,month} = this;
+				if (this.dateIsValid({year, month: month+1})) {
+					if (month < 11) {
+						this.month++;
+					} else {
+						this.year++;
+						this.month = 0;
+					}
 				}
 			},
 			choiceDay(d) {
-				let {year, month, format, today, forward} = this;
-				if (d !== '' && !(forward && dateCompare(today, {year, month, day: d}))) {
+				let {year, month, format} = this;
+				if (d && this.dateIsValid({year, month, day:d})) {
 					this.day = d;
 					this.value = dateFormat(year, month, d, format);
 					this.immEndChoice();
@@ -300,7 +336,7 @@
 				}
 				setTimeout(function() {
 					if (!that.isMouseOver && inputEle != document.activeElement) {
-						that.dayPanelIsShow = false;
+						that.immEndChoice();
 					}
 				}, 300);
 			},
@@ -311,145 +347,11 @@
 			immEndChoice(){
 				this.isMouseOver = true;
 				this.dayPanelIsShow = false;
+				this.monthPanelIsShow = false;
+				this.$dispatch('datepickerEnd', this.field);
 			}
 		}
 	}
 </script>
 
-<style scoped>
-@-webkit-keyframes vueDatePicker {
-  0% {
-    opacity: 0;
-    -webkit-transform: translate(-50%, -50%) scale(0);
-            transform: translate(-50%, -50%) scale(0); }
-  100% {
-    opacity: 1;
-    -webkit-transform: translate(0) scale(1);
-            transform: translate(0) scale(1); } }
-
-@keyframes vueDatePicker {
-  0% {
-    opacity: 0;
-    -webkit-transform: translate(-50%, -50%) scale(0);
-            transform: translate(-50%, -50%) scale(0); }
-  100% {
-    opacity: 1;
-    -webkit-transform: translate(0) scale(1);
-            transform: translate(0) scale(1); } }
-
-.vue-datepicker {
-  position: relative;
-  margin: 0;
-  padding: 0;
-  font-family: verdana;
-  font-size: 14px;
-  color: #666; }
-  .vue-datepicker * {
-    margin: 0;
-    padding: 0; }
-  .vue-datepicker input {
-    display: block;
-    width: 245px;
-    height: 28px;
-    padding-left: 6px;
-    border: 1px solid #DDD;
-    outline: none; }
-  .vue-datepicker .vue-datepicker-panels {
-    position: absolute;
-    z-index: 99999;
-    left: 0;
-    background-color: #FFF;
-    width: 245px;
-    border: 1px solid #DDD;
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.18);
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.18);
-    padding: 10px 6px;
-    -webkit-animation: vueDatePicker 0.1s ease-out;
-            animation: vueDatePicker 0.1s ease-out; }
-  .vue-datepicker .vue-datepicker-panel .vue-datepicker-month {
-    padding-bottom: 4px;
-    height: 35px;
-    line-height: 35px;
-    overflow: hidden;
-    text-align: center; }
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-month a {
-      float: left;
-      display: block;
-      width: 35px;
-      cursor: pointer;
-      color: #999;
-      font-size: 12px; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-month a:hover {
-        background-color: #F5F6F7; }
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-month span {
-      float: left;
-      display: block;
-      width: 175px; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-month span.vue-datepicker-btn:hover {
-        background-color: #F5F6F7;
-        cursor: pointer; }
-  .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb,
-  .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 {
-    width: 245px;
-    border-collapse: collapse;
-    text-align: center; }
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead,
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead {
-      background-color: #F5F6F7;
-      height: 35px;
-      line-height: 35px;
-      border-top: 1px solid #DDD;
-      border-bottom: 1px solid #DDD; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead tr,
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead tr {
-        border: none; }
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb thead tr th,
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 thead tr th {
-          width: 35px;
-          font-size: 12px;
-          border: none;
-          font-weight: normal; }
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr,
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr {
-      border-top: 1px solid #EEE; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td,
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td {
-        height: 31.5px; }
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed,
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed {
-          cursor: pointer; }
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed span,
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed span {
-            display: block;
-            height: 21.7px;
-            line-height: 21.7px; }
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed:hover,
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed:hover {
-            background-color: #F5F6F7;
-            color: #d0000e; }
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-on span,
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-on span {
-            color: #FFF;
-            background-color: #d0000e; }
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid,
-          .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid {
-            cursor: default; }
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid span,
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid span {
-              color: #ccc; }
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb tbody tr td.z-existed.z-invalid:hover,
-            .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed.z-invalid:hover {
-              background-color: transparent; }
-  .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr {
-    border-top: 1px solid #EEE; }
-    .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td {
-      height: 31.5px;
-      padding: 4px 10px;
-      font-size: 13px; }
-      .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed {
-        cursor: pointer; }
-        .vue-datepicker .vue-datepicker-panel .vue-datepicker-tb2 tbody tr td.z-existed span {
-          display: block;
-          height: 22.75px;
-          line-height: 22.75px; }
-</style>
+<style scoped> @import './datepicker.css'; </style>

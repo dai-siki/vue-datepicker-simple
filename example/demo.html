@@ -14,20 +14,44 @@
 			padding: 50px;
 		}
 
+		#app {
+			width: 800px;
+			margin: 40px auto;
+		}
+
 		#app label {
 			display: block;
-			margin-bottom: 10px;
+		}
+
+		.item {
+			margin-bottom: 30px;
 		}
 	</style>
 </head>
 
 <body>
 <div id="app">
-	<label for="myDate">选择您的新婚之日</label>
-	<date-picker field="myDate" placeholder="选择日期"
-				 :forward="true"
-				 :value.sync="date"
-				 :format="format"></date-picker>
+	<div class="item">
+		<label for="myDate">向前看</label>
+		<date-picker field="myDate" placeholder="选择日期"
+					 :forward="true"
+					 :value.sync="date1"
+					 :format="format"></date-picker>
+	</div>
+	<div class="item">
+		<label for="myDate">时至今日</label>
+		<date-picker field="myDate" placeholder="选择日期"
+					 :backward="true"
+					 :value.sync="date2"
+					 :format="format"></date-picker>
+	</div>
+	<div class="item">
+		<label for="myDate">今天不行</label>
+		<date-picker field="myDate" placeholder="选择日期"
+					 :no-today="true"
+					 :value.sync="date3"
+					 :format="format"></date-picker>
+	</div>
 </div>
 
 <script src="demo-src.js"></script>

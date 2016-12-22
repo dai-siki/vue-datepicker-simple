@@ -1,6 +1,6 @@
 <template>
 <div class="vue-datepicker" @mouseout="endChoice" @mouseover="startMouseOver">
-	<input type="text" autocomplete="off" disableautocomplete :name="field" :id="field" :value="value" :placeholder="placeholder" @focus="startChoice" @keypress="startChoice" @blur="endChoice" ref="input">
+	<input type="text" autocomplete="off" disableautocomplete :name="field" :id="field" :value="value" :placeholder="placeholder" @focus="startChoice" @keypress="startChoice" @blur="endChoice"  ref="input">
 	<div class="vue-datepicker-panels" v-show="dayPanelIsShow || monthPanelIsShow">
 		<!--日期选择-->
 		<div class="vue-datepicker-panel" v-show="dayPanelIsShow">
@@ -260,8 +260,7 @@ export default {
 				return false;
 			}
 			this.month = m;
-			this.dayPanelIsShow = true;
-			this.monthPanelIsShow = false;
+			this.startChoice();
 		},
 		// 样式
 		classMonth(m) {
@@ -304,6 +303,7 @@ export default {
 				e.returnValue = false;
 			}
 			this.dayPanelIsShow = true;
+			this.monthPanelIsShow = false;
 		},
 		prevMonth() {
 			let {
@@ -369,7 +369,7 @@ export default {
 		},
 		// 立即关闭日期面板
 		immEndChoice() {
-			this.isMouseOver = true;
+			this.isMouseOver = false;
 			this.dayPanelIsShow = false;
 		}
 	}
@@ -377,4 +377,4 @@ export default {
 
 </script>
 
-<style lang="sass" scoped>@import "./scss/datepicker.scss"</style>
+<style scoped> @import './datepicker.css'; </style>
