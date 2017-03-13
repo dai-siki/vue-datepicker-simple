@@ -167,12 +167,17 @@
 			},
 			// 当前日期
 			curr(){
-				let {value} = this,
-						dateObj, year, month, day;
+				let {value, noToday} = this,
+					dateObj,
+					year="0000",
+					month="00",
+					day="00";
 				if (value) {
 					dateObj = new Date(value);
-				} else {
+				} else if(!noToday) {
 					dateObj = new Date();
+				}else{
+					return {year, month, day};
 				}
 				year = dateObj.getFullYear();
 				month = dateObj.getMonth();
